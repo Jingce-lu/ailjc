@@ -13,7 +13,8 @@
     "ljc-list": "bin/ljc-list.js",
     "ljc-init": "bin/ljc-init.js",
     "ljc-in": "bin/ljc-input.js",
-    "ljc-readline": "bin/ljc-readline.js"
+    "ljc-readline": "bin/ljc-readline.js",
+    "ljc-rename": "bin/ljc-rename"
   },
   "dependencies": {
     "commander": "^2.16.0",

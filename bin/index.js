@@ -12,6 +12,7 @@ program
     .command('init', 'init templates')
     .command('in', 'inquirer 交互')
     .command('readline', 'readline 交互测试')
+    .command('rename', 'fs module测试')
     .description('this is my test')      //描述
     // .option('-p, --no-peppers', 'Add peppers')
     // .option('-P, --pineapple', 'Add pineapple')
