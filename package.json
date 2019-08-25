@@ -1,5 +1,5 @@
 {
-  "name": "ailjc",
+  "name": "ailjc-cli",
   "version": "0.1.0",
   "description": "This is ailjc-cli",
   "main": "index.js",
