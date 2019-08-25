@@ -1,7 +1,7 @@
 {
-  "name": "mycli",
-  "version": "0.0.1",
-  "description": "This is just a test",
+  "name": "ailjc",
+  "version": "0.1.0",
+  "description": "This is ailjc-cli",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,20 +9,15 @@
   "author": "路小二",
   "license": "ISC",
   "bin": {
-    "ljc": "bin/index.js",
-    "ljc-list": "bin/ljc-list.js",
-    "ljc-init": "bin/ljc-init.js",
-    "ljc-in": "bin/ljc-input.js",
-    "ljc-readline": "bin/ljc-readline.js",
-    "ljc-rename": "bin/ljc-rename"
+    "ailjc": "bin/index.js"
   },
   "dependencies": {
-    "commander": "^2.16.0",
-    "inquirer": "^6.0.0",
-    "readline": "^1.3.0"
-  },
-  "devDependencies": {
-    "chalk": "^2.4.1",
-    "request": "^2.87.0"
+    "chalk": "^2.4.2",
+    "commander": "^3.0.0",
+    "download-git-repo": "^2.0.0",
+    "handlebars": "^4.1.2",
+    "inquirer": "^7.0.0",
+    "log-symbols": "^3.0.0",
+    "ora": "^3.4.0"
   }
 }

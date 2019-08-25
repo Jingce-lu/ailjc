@@ -1,33 +1,108 @@
 #!/usr/bin/env node --harmony
 
-var program = require('commander');
+const program = require('commander');
+const chalk = require('chalk');
+const download = require('download-git-repo');
+const fs = require('fs');
+const handlebars = require('handlebars');
+const inquirer = require('inquirer');
+const symbols = require('log-symbols'); // 成功,失败图标
+const ora = require('ora'); // 加载loading
+
+const pack = require('../package.json');
+const templates = {
+  "wiki": {
+    url: "http://github.com:Jingce-lu/lu-wiki#master",
+    downloadUrl: "http://github.com:Jingce-lu/lu-wiki#master",
+    description: "lu-wiki template"
+  }
+};
+
+const questions = [
+  {
+    type: 'input',
+    name: 'description',
+    message: '请输入项目描述'
+  },
+  {
+      type: 'input',
+      name: 'author',
+      message: '请输入作者姓名'
+  }
+];
+
 
 program
-    .version(require('../package').version)
-    // .usage('[command] [options]')  //在help中告诉用户如何使用
-    .usage('<command> [options]')
-    // .command('page [pageName]')  //定义命令行指令
-    // .alias('pa')                 //重命名，定义一个更短的指令
-    .command('list', 'list available official templates')
-    .command('init', 'init templates')
-    .command('in', 'inquirer 交互')
-    .command('readline', 'readline 交互测试')
-    .command('rename', 'fs module测试')
-    .description('this is my test')      //描述
-    // .option('-p, --no-peppers', 'Add peppers')
-    // .option('-P, --pineapple', 'Add pineapple')
-    // .option('-n, --name [name]', 'Add bbq sauce')
-    // .action((pageName) => {
-    //    console.log(pageName);
-    // })
+  .version(pack.version,  '-v --version')
+  .usage('<command> [options]')
+  .description('this is ailjc-cli')
 
- // 自定义帮助信息
-   .on('--help', function () {
+
+program
+  .command('init <template> <project>')
+  .description('init template')
+  .action((templateName, projectName) => {
+    if (fs.existsSync(projectName)) {
+      console.log(symbols.error, chalk('项目已经存在'));
+      return;
+    }
+
+    const { downloadUrl } = templates[templateName];
+
+    inquirer.prompt(questions).then(answer => {
+      const spinner = ora('正在下载模板...');
+      spinner.start();
+
+      download(downloadUrl, projectName, {clone: true}, err => {
+        if (err) {
+          spinner.fail();
+          console.log(symbols.error, chalk.red(err));
+        } else {
+          spinner.succeed();
+          const meta = {
+            name: projectName,
+            author: answer.author,
+            description: answer.description
+          };
+          const packagePath = `${projectName}/package.json`;
+          const packageContent = fs.readFileSync(packagePath, 'utf8');
+          const packageResult = handlebars.compile(packageContent)(meta);
+
+          fs.writeFileSync(packagePath, packageResult);
+          console.log(symbols.success, chalk.green('项目初始化完成'));
+        }
+      })
+    })
+
+  })
+
+
+program
+  .command('list')
+  .alias('ls')
+  .description('查看所有可用模板')
+  .action(() => {
+    Object.keys(templates).forEach((repo, i) => {
+      console.log(
+        '  ' + chalk.yellow('★') +
+        '  ' + chalk.blue(repo) +
+        ' - ' + templates[repo].description)
+    })
+  })
+
+
+program
+   .on('--help -h', function () {
         console.log('  Examples:');
         console.log('');
-        console.log('    $ ljc list ');
-        console.log('    $ ljc pa index');
+        console.log('    $ ailjc list ');
+        console.log('    $ ailjc init wiki projectName');
         console.log();
 });
-// console.log(process.argv)
+
+
 program.parse(process.argv);  //解析命令行
+
+if (program.args.length == 0) {
+  program.help();
+}
