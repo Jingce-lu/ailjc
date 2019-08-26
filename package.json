@@ -1,6 +1,6 @@
 {
   "name": "ailjc-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "This is ailjc-cli",
   "main": "index.js",
   "scripts": {
@@ -19,5 +19,13 @@
     "inquirer": "^7.0.0",
     "log-symbols": "^3.0.0",
     "ora": "^3.4.0"
+  },
+  "keywords": ["cli", "wiki"],
+  "bugs": {
+    "url": "https://github.com/jingce-lu/ailjc/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jingce-lu/ailjc.git"
   }
 }
